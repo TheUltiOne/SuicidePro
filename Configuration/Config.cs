@@ -27,7 +27,7 @@ namespace SuicidePro.Configuration
 			"list"
 		};
 
-		[Description("If the permission is set to \"default\", it will just be vip.commandname")]
+		[Description("If the permission is set to \"default\", it will just be kl.commandname")]
 		public List<CustomHandlerCommandConfig> KillConfigs { get; set; } = new List<CustomHandlerCommandConfig>
 		{
 			new CustomHandlerCommandConfig(),
@@ -36,13 +36,12 @@ namespace SuicidePro.Configuration
 			new CustomHandlerCommandConfig {Name = "flip", Description = "Do a flip!", Permission = "default", Response = "Epic tricks", DamageHandler = new CustomDamageHandler {Reason = "Did a flip", Velocity = new Velocity(0.5f, 2, 0)}},
 			new CustomHandlerCommandConfig {Name = "backflip", Description = "Do a backflip!", Permission = "default", Response = "Epic back tricks", DamageHandler = new CustomDamageHandler {Reason = "Did a backflip", Velocity = new Velocity(-0.5f, 2, 0)}},
 			new CustomHandlerCommandConfig {Name = "???", Description = "I don't even know what this will do.", Permission = "default", Response = "bruh", DamageHandler = new CustomDamageHandler {Reason = "???", Velocity = new Velocity(70, 70, 70)}}
-	};
+		};
 
-		public Dictionary<string, EffectConfig> CustomEffects { get; set; } =
-			new Dictionary<string, EffectConfig>
-			{
-				{"explode", new EffectConfig {Name = "explode", Aliases = new[] {"explosion","blowup","boom"}, Description = "Go out with a blast! (explosion does not deal damage)", Delay = 0.3f, Response = "Boom", DamageHandler = new CustomDamageHandler {Reason = "Boom!"}}}
-			};
+		public Dictionary<string, EffectConfig> CustomEffects { get; set; } = new Dictionary<string, EffectConfig>
+		{
+			{"explode", new EffectConfig {Name = "explode", Aliases = new[] {"explosion","blowup","boom"}, Description = "Go out with a blast! (explosion does not deal damage)", Delay = 0.3f, Response = "Boom", DamageHandler = new CustomDamageHandler {Reason = "Boom!"}}}
+		};
 
 		public bool Debug { get; set; }
 

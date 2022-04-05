@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using CommandSystem;
 using Exiled.API.Features;
-using Exiled.API.Features.Items;
 using Exiled.Permissions.Extensions;
-using GameCore;
-using Mirror;
-using PlayerStatsSystem;
 using RemoteAdmin;
 using SuicidePro.Configuration;
 using SuicidePro.Handlers.CustomEffect;
-using UnityEngine;
-using UnityEngine.Assertions.Must;
 using Log = Exiled.API.Features.Log;
 
 namespace SuicidePro.Handlers

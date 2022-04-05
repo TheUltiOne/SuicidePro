@@ -5,9 +5,15 @@ namespace SuicidePro.Handlers.CustomEffect.Effect
 {
     public class Explode : CustomEffect
     {
-        public override string Id { get; set; } = "explode";
+        public override string Id { get; } = "explode";
 
         public override void Use(Player player)
-            => new ExplosiveGrenade(ItemType.GrenadeHE, player) {FuseTime = 0.3f, MaxRadius = 0}.SpawnActive(player.Position, player);
+        {
+            var grenade = Item.Create(ItemType.GrenadeHE) as ExplosiveGrenade;
+            grenade.FuseTime = 0.3f;
+            grenade.MaxRadius = 0;
+
+            grenade.SpawnActive(player.Position, player);
+        }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Exiled.API.Features;
-using SuicidePro.Configuration;
+using YamlDotNet.Serialization;
 
 namespace SuicidePro.Handlers.CustomEffect
 {
@@ -12,7 +11,7 @@ namespace SuicidePro.Handlers.CustomEffect
         public static List<Type> GetAllEffects()
             => Plugin.Instance.Assembly.GetTypes().Where(x => x.IsSubclassOf(typeof(CustomEffect)) && x != typeof(CustomEffect)).ToList();
 
-        public static void EffectInstanceFactory()
+        public static void CreateEffectInstances()
         {
             foreach (Type type in GetAllEffects())
                 Effects.Add(Activator.CreateInstance(type) as CustomEffect);
@@ -20,7 +19,9 @@ namespace SuicidePro.Handlers.CustomEffect
 
         public static List<CustomEffect> Effects = new List<CustomEffect>();
 
-        public abstract string Id { get; set; }
+        [YamlIgnore] // i plan to remove effectconfig from the config.cs and just create instance directly in config in a list which is why I have these YamlIgnores
+        public abstract string Id { get; }
+        [YamlIgnore]
         public EffectConfig Config => Plugin.Instance.Config.CustomEffects[Id];
 
         public abstract void Use(Player player);

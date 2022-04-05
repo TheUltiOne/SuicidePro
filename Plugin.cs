@@ -3,7 +3,6 @@ using System.Reflection;
 using Exiled.API.Features;
 using HarmonyLib;
 using PlayerStatsSystem;
-using SuicidePro.Configuration;
 using SuicidePro.ContentGun;
 using SuicidePro.Handlers.CustomEffect;
 using UnityEngine;
@@ -28,7 +27,7 @@ namespace SuicidePro
         public override void OnEnabled()
         {
             Instance = this;
-            CustomEffect.EffectInstanceFactory();
+            CustomEffect.CreateEffectInstances();
             VelocityInfo =
                 typeof(CustomReasonDamageHandler).GetField("StartVelocity", BindingFlags.NonPublic | BindingFlags.Instance);
             Log.Info(VelocityInfo == null);

@@ -100,13 +100,13 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="API\CustomEffect.cs" />
         <Compile Include="Configuration\Config.cs" />
         <Compile Include="ContentGun\ContentGunCommand.cs" />
         <Compile Include="ContentGun\Handler.cs" />
         <Compile Include="DamagePatch.cs" />
-        <Compile Include="Handlers\CustomEffect\CustomEffect.cs" />
-        <Compile Include="Handlers\CustomEffect\EffectConfig.cs" />
-        <Compile Include="Handlers\CustomEffect\Effects\Explode.cs" />
+        <Compile Include="Handlers\CustomEffectHandlers\EffectConfig.cs" />
+        <Compile Include="Handlers\CustomEffectHandlers\Effects\Explode.cs" />
         <Compile Include="Handlers\KillCommand.cs" />
         <Compile Include="Handlers\Methods.cs" />
         <Compile Include="Plugin.cs" />

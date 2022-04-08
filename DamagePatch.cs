@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿/*using System.Collections.Generic;
 using System.Reflection.Emit;
 using HarmonyLib;
 using NorthwoodLib.Pools;
@@ -23,4 +23,4 @@ namespace SuicidePro
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-}
+}*/

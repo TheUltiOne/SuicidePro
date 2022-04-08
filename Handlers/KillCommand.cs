@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
+using System.Text;
 using CommandSystem;
 using Exiled.API.Features;
-using Exiled.API.Features.Items;
 using Exiled.Permissions.Extensions;
-using GameCore;
-using Mirror;
-using PlayerStatsSystem;
 using RemoteAdmin;
 using SuicidePro.Configuration;
 using SuicidePro.Handlers.CustomEffect;
-using UnityEngine;
-using UnityEngine.Assertions.Must;
 using Log = Exiled.API.Features.Log;
 
 namespace SuicidePro.Handlers
@@ -28,6 +21,7 @@ namespace SuicidePro.Handlers
 
 		public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
 		{
+			
 			PlayerCommandSender playerCommandSender = sender as PlayerCommandSender;
 			if (playerCommandSender == null)
 			{
@@ -40,19 +34,20 @@ namespace SuicidePro.Handlers
 
 			if (Plugin.Instance.Config.HelpCommandAliases.Contains(arg))
 			{
-				response = "Here are all the kill commands you can use:\n\n";
+				var build = new StringBuilder("Here are all the kill commands you can use:\n\n");
 				foreach (var commandConfig in Plugin.Instance.Config.KillConfigs)
 				{
 					if (commandConfig.Permission == "none" || player.CheckPermission(FormatPermission(commandConfig)))
-						response += $"<b><color=white>.{Plugin.Instance.Config.CommandPrefix}</color> <color=yellow>{commandConfig.Name}</color></b> {(commandConfig.Aliases.Any() ? $"<color=#3C3C3C>({String.Join(", ", commandConfig.Aliases)})</color>" : String.Empty)}\n<color=white>{commandConfig.Description}</color>\n\n";
+						build.Append($"<b><color=white>.{Plugin.Instance.Config.CommandPrefix}</color> <color=yellow>{commandConfig.Name}</color></b> {(commandConfig.Aliases.Any() ? $"<color=#3C3C3C>({String.Join(", ", commandConfig.Aliases)})</color>" : String.Empty)}\n<color=white>{commandConfig.Description}</color>\n\n");
 				}
 
-				foreach (var effect in CustomEffect.CustomEffect.Effects)
+				foreach (var effect in API.CustomEffect.Effects)
 				{
 					if (effect.Config.Enabled && (effect.Config.Permission == "none" || player.CheckPermission(FormatPermission(effect.Config))))
-						response += $"<b><color=white>.{Plugin.Instance.Config.CommandPrefix}</color> <color=yellow>{effect.Config.Name}</color></b> {(effect.Config.Aliases.Any() ? $"<color=#3C3C3C>({String.Join(", ", effect.Config.Aliases)})</color>" : String.Empty)}\n<color=white>{effect.Config.Description}</color>\n\n";
+						build.Append($"<b><color=white>.{Plugin.Instance.Config.CommandPrefix}</color> <color=yellow>{effect.Config.Name}</color></b> {(effect.Config.Aliases.Any() ? $"<color=#3C3C3C>({String.Join(", ", effect.Config.Aliases)})</color>" : String.Empty)}\n<color=white>{effect.Config.Description}</color>\n\n");
 				}
 
+				response = build.ToString();
 				return true;
 			}
 
@@ -60,20 +55,16 @@ namespace SuicidePro.Handlers
 				arg = "default";
 
 			Config.BaseCommandConfig config = Plugin.Instance.Config.KillConfigs.FirstOrDefault(x => x.Name == arg || x.Aliases.Contains(arg));
-			var customConfig =
-				Plugin.Instance.Config.CustomEffects.FirstOrDefault(x =>
-					x.Value.Name == arg || x.Value.Aliases.Contains(arg));
+			var customConfig = API.CustomEffect.Effects.FirstOrDefault(x => x.Config.Name == arg || x.Config.Aliases.Contains(arg));
 
-			if (config == null)
+			if (config == null && customConfig == null)
 			{
-				if (customConfig.Equals(default(KeyValuePair<string, EffectConfig>)))
-				{
-					response = $"Could not find any kill command with the name or alias {arg}.";
-					return false;
-				}
-
-				config = customConfig.Value;
+				response = $"Could not find any kill command with the name or alias {arg}.";
+				return false;
 			}
+
+			if (customConfig != null)
+				config = customConfig.Config;
 
 			if (config.Permission != "none" && !player.CheckPermission(FormatPermission(config)))
 			{
@@ -93,11 +84,18 @@ namespace SuicidePro.Handlers
 				return false;
 			}
 
-			var ans = config.Run(player);
-			if (!ans)
+			if (customConfig == null)
 			{
-				response = "This effect is disabled.";
-				return false;
+				((Config.CustomHandlerCommandConfig) config).Run(player);
+			}
+			else
+			{
+				var ans = customConfig.Run(player);
+				if (!ans)
+				{
+					response = "This effect is disabled.";
+					return false;
+				}
 			}
 
 			response = config.Response;

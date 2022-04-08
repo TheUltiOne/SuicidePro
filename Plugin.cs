@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using Exiled.API.Features;
-using HarmonyLib;
 using PlayerStatsSystem;
-using SuicidePro.Configuration;
 using SuicidePro.ContentGun;
-using SuicidePro.Handlers.CustomEffect;
 using UnityEngine;
 using Player = Exiled.Events.Handlers.Player;
 using Server = Exiled.Events.Handlers.Server;
@@ -17,24 +14,19 @@ namespace SuicidePro
         public override string Author { get; } = "TheUltiOne";
         public override string Name { get; } = "Suicide - Pro Edition";
         public override Version Version { get; } = new Version(1, 0, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(4, 2, 5);
+        public override Version RequiredExiledVersion { get; } = new Version(5, 0, 0);
 
         public static Plugin Instance;
-        private Harmony _harmony;
-        private string _harmonyId;
         private static Handler _cgEventHandlers;
         public FieldInfo VelocityInfo;
 
         public override void OnEnabled()
         {
             Instance = this;
-            CustomEffect.EffectInstanceFactory();
-            VelocityInfo =
-                typeof(CustomReasonDamageHandler).GetField("StartVelocity", BindingFlags.NonPublic | BindingFlags.Instance);
-            Log.Info(VelocityInfo == null);
-            _harmonyId = $"com.theultione.suicidepro.{DateTime.Now.Ticks}";
-            _harmony = new Harmony(_harmonyId);
-            _harmony.PatchAll();
+            Config.ExplodeEffect.Register();
+
+            VelocityInfo = typeof(CustomReasonDamageHandler).GetField("StartVelocity", BindingFlags.NonPublic | BindingFlags.Instance);
+
             if (Config.ContentGunConfig.Enabled)
             {
                 _cgEventHandlers = new Handler();
@@ -62,9 +54,6 @@ namespace SuicidePro
                 _cgEventHandlers = null;
             }
 
-            _harmony.UnpatchAll(_harmonyId);
-            _harmony = null;
-            _harmonyId = string.Empty;
             Instance = null;
             base.OnDisabled();
         }

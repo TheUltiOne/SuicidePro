@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CommandSystem;
@@ -7,7 +6,6 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using RemoteAdmin;
 using SuicidePro.Configuration;
-using SuicidePro.Handlers.CustomEffect;
 using Log = Exiled.API.Features.Log;
 
 namespace SuicidePro.Handlers

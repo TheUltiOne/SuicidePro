@@ -10,10 +10,10 @@ namespace SuicidePro.API
     public class CustomEffect
     {
         /// <summary>
-        /// A list of all <see cref="CustomEffect"/>.
+        /// A <see cref="HashSet{T}"/> of all <see cref="CustomEffect"/>.
         /// </summary>
         /// <remarks>This does not exactly contain all <see cref="CustomEffect"/>. It will only do so if developers who add their <see cref="CustomEffect"/> use <see cref="Register"/> on their effect.</remarks>
-        public static readonly List<CustomEffect> Effects = new List<CustomEffect>();
+        public static readonly HashSet<CustomEffect> Effects = new HashSet<CustomEffect>();
 
         /// <summary>
         /// The ID of the CustomEffect. This is absolutely required to change.

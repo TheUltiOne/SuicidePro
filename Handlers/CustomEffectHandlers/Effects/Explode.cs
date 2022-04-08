@@ -9,7 +9,6 @@ namespace SuicidePro.Handlers.CustomEffect.Effect
 
         public override void Use(Player player)
         {
-            Map.Broadcast(3, "Bruh test");
             var grenade = Item.Create(ItemType.GrenadeHE) as ExplosiveGrenade;
             grenade.FuseTime = 0.3f;
             grenade.MaxRadius = 0;

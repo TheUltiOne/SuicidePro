@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Exiled.API.Features;
+using HarmonyLib;
 using PlayerStatsSystem;
 using SuicidePro.ContentGun;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace SuicidePro
         public override Version RequiredExiledVersion { get; } = new Version(5, 0, 0);
 
         public static Plugin Instance;
+        private Harmony _harmony;
         private static Handler _cgEventHandlers;
         public FieldInfo VelocityInfo;
 
@@ -24,6 +26,9 @@ namespace SuicidePro
         {
             Instance = this;
             Config.ExplodeEffect.Register();
+
+            _harmony = new Harmony($"com.theultione.suicidepro.{DateTime.Now.Ticks}");
+            _harmony.PatchAll();
 
             VelocityInfo = typeof(CustomReasonDamageHandler).GetField("StartVelocity", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -43,6 +48,9 @@ namespace SuicidePro
 
         public override void OnDisabled()
         {
+            _harmony.UnpatchAll(_harmony.Id);
+            _harmony = null;
+
             if (_cgEventHandlers != null)
             {
                 Player.Dying -= _cgEventHandlers.OnDying;

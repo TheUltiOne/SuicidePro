@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
+using PlayerStatsSystem;
 
 namespace SuicidePro.Handlers.CustomEffectHandlers.Effects
 {
@@ -9,7 +10,7 @@ namespace SuicidePro.Handlers.CustomEffectHandlers.Effects
 
         public override void Use(Player player)
         {
-            player.Kill(DamageType.ParticleDisruptor);
+            player.ReferenceHub.playerStats.KillPlayer(new DisruptorDamageHandler(player.Footprint, -1));
         }
     }
 }

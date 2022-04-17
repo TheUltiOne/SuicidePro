@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using MEC;
 using PlayerStatsSystem;
 using SuicidePro.Configuration;
+using SuicidePro.Handlers.CustomEffectHandlers;
 
 namespace SuicidePro.Handlers
 {
@@ -18,6 +19,9 @@ namespace SuicidePro.Handlers
         {
             Timing.CallDelayed(config.Delay, () =>
             {
+                if (config is EffectConfig eCfg && eCfg.IgnoreDamageHandlerConfigs)
+                    return;
+
                 var handler = new CustomReasonDamageHandler(config.DamageHandler.Reason, float.MaxValue, config.DamageHandler.CassieIfScp);
                 player.Hurt(handler);
                 var velocity = player.ReferenceHub.playerMovementSync.PlayerVelocity + config.DamageHandler.Velocity.ToVector3(player.CameraTransform);

@@ -60,6 +60,7 @@ namespace SuicidePro.Configuration
 			{
 				Aliases = new[] {"raygun"}, Name = "disintegrate",
 				Description = "Destroy your body!", Response = "Disintegrated",
+				IgnoreDamageHandlerConfigs = true
 			}
 		};
 

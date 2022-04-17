@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using SuicidePro.Configuration;
+using YamlDotNet.Serialization;
 
 namespace SuicidePro.Handlers.CustomEffectHandlers
 {
@@ -10,5 +11,11 @@ namespace SuicidePro.Handlers.CustomEffectHandlers
         /// </summary>
         [Description("Sets if this kill command is usable or not.")]
         public bool Enabled { get; set; } = true;
+
+        /// <summary>
+        /// Prevents from using the <see cref="Methods.Run"/> method.
+        /// </summary>
+        [YamlIgnore]
+        public bool IgnoreDamageHandlerConfigs { get; set; }
     }
 }

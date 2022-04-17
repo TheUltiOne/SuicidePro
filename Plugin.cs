@@ -14,7 +14,7 @@ namespace SuicidePro
         public override string Author { get; } = "TheUltiOne";
         public override string Name { get; } = "Suicide - Pro Edition";
         public override Version Version { get; } = new Version(2, 1, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(5, 1, 3);
+        public override Version RequiredExiledVersion { get; } = new Version(5, 1, 0);
 
         public static Plugin Instance;
         private static Handler _cgEventHandlers;

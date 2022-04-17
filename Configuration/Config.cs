@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Exiled.API.Interfaces;
 using SuicidePro.API;
-using SuicidePro.Handlers.CustomEffect;
-using SuicidePro.Handlers.CustomEffect.Effect;
+using SuicidePro.Handlers.CustomEffectHandlers;
+using SuicidePro.Handlers.CustomEffectHandlers.Effects;
 using UnityEngine;
 
 namespace SuicidePro.Configuration
@@ -52,9 +52,22 @@ namespace SuicidePro.Configuration
 				DamageHandler = new CustomDamageHandler {Reason = "Boom!", Velocity = new Velocity(2, 0, 0)}
 			}
 		};
+		
+		[Description("Configuration for the Disintegrate effect.")]
+		public Disintegrate DisintegrateEffect { get; set; } = new Disintegrate
+		{
+			Config = new EffectConfig
+			{
+				Aliases = new[] {"raygun"}, Name = "disintegrate",
+				Description = "Destroy your body!", Response = "Disintegrated",
+			}
+		};
 
-			[Description("Enables debug messages in the console.")]
+		[Description("Enables debug messages in the console.")]
 		public bool Debug { get; set; }
+
+		[Description("Whether you will still be able to run disabled effects that are force registered by its developer.")]
+		public bool AllowRunningDisabledForceRegistered { get; set; }
 
 		[Description("Configuration for the Content Gun, summoned using .contentgun and requires cg.give permission")]
 		public ContentGunConfigClass ContentGunConfig { get; set; } = new ContentGunConfigClass();

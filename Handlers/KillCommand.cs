@@ -70,7 +70,7 @@ namespace SuicidePro.Handlers
 				return false;
 			}
 	
-			if (!Round.IsStarted && !RoundSummary.singleton.RoundEnded)
+			if (!Round.IsStarted)
 			{
 				response = "The round has not started yet.";
 				return false;
@@ -89,7 +89,7 @@ namespace SuicidePro.Handlers
 			else
 			{
 				var ans = customConfig.Run(player);
-				if (!ans)
+				if (!ans && !Plugin.Instance.Config.AllowRunningDisabledForceRegistered)
 				{
 					response = "This effect is disabled.";
 					return false;

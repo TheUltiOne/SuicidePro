@@ -24,6 +24,7 @@ namespace SuicidePro
         {
             Instance = this;
             Config.ExplodeEffect.Register();
+            Config.DisintegrateEffect.Register();
 
             VelocityInfo = typeof(CustomReasonDamageHandler).GetField("StartVelocity", BindingFlags.NonPublic | BindingFlags.Instance);
 

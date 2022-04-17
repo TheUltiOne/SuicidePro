@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Features;
+using SuicidePro.API.Enums;
 using SuicidePro.Handlers;
-using SuicidePro.Handlers.CustomEffect;
+using SuicidePro.Handlers.CustomEffectHandlers;
 using YamlDotNet.Serialization;
 
 namespace SuicidePro.API
@@ -16,7 +17,7 @@ namespace SuicidePro.API
         public static readonly HashSet<CustomEffect> Effects = new HashSet<CustomEffect>();
 
         /// <summary>
-        /// The ID of the CustomEffect. This is absolutely required to change.
+        /// The ID of the CustomEffect. This is absolutely required to override.
         /// </summary>
         [YamlIgnore]
         public virtual string Id { get; } = "default";
@@ -56,17 +57,24 @@ namespace SuicidePro.API
         /// <summary>
         /// A method used to properly add a <see cref="CustomEffect"/> with checks for it to be usable with with the kill command.
         /// </summary>
-        public void Register()
+        /// <param name="force">A <see cref="IgnoreRequirementType"/> flag that dictates what requirements will be ignored. Defaults to None.</param>
+        public void Register(IgnoreRequirementType force = IgnoreRequirementType.None)
         {
-            if (Effects.Contains(this))
+            if (Effects.Contains(this) && !force.HasFlag(IgnoreRequirementType.Duplicates))
             {
                 Log.Warn($"{this} attempted to register but failed: already registered.");
                 return;
             }
 
-            if (Effects.Any(x => x.Id == Id))
+            if (Effects.Any(x => x.Id == Id) && !force.HasFlag(IgnoreRequirementType.IdDuplicates))
             {
                 Log.Warn($"{this} attempted to register but failed: another effect already uses this ID.");
+                return;
+            }
+
+            if (!Config.Enabled && !force.HasFlag(IgnoreRequirementType.Enabled))
+            {
+                Log.Warn($"{this} attempted to register but failed: already registered.");
                 return;
             }
 
@@ -74,12 +82,30 @@ namespace SuicidePro.API
             Log.Debug($"{this} registered successfully!", Plugin.Instance.Config.Debug);
         }
 
+        /// <summary>
+        /// Gets a <see cref="Register"/>ed <see cref="CustomEffect"/> from it's <see cref="Id"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="Id"/> of the <see cref="CustomEffect"/> to register.</param>
+        /// <returns>The obtained <see cref="CustomEffect"/>. May be null if none found.</returns>
         public static CustomEffect Get(string id)
-            => Effects.First(x => x.Id == id);
+            => Effects.FirstOrDefault(x => x.Id == id);
+
+        /// <summary>
+        /// Gets a <see cref="Register"/>ed <see cref="CustomEffect"/> from it's <see cref="Id"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="Id"/> of the <see cref="CustomEffect"/> to register.</param>
+        /// <param name="effect">The value of the <see cref="CustomEffect"/> obtained. May be null if none found.</param>
+        /// <returns>A <see cref="bool"/> dictating whether the <see cref="CustomEffect"/> was found.</returns>
+        public static bool TryGet(string id, out CustomEffect effect)
+        {
+            effect = Get(id);
+            return effect != null;
+        }
 
         public override string ToString()
             => $"{Config.Name} (ID {Id})";
 
+        // For config.
         public CustomEffect()
         {
         }

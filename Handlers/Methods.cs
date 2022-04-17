@@ -4,14 +4,11 @@ using JetBrains.Annotations;
 using MEC;
 using PlayerStatsSystem;
 using SuicidePro.Configuration;
-using SuicidePro.Handlers.CustomEffect;
 
 namespace SuicidePro.Handlers
 {
     public static class Methods
     {
-
-
         /// <summary>
         /// Runs a <see cref="Config.CustomHandlerCommandConfig"/> on a specific <see cref="Player"/>.
         /// </summary>

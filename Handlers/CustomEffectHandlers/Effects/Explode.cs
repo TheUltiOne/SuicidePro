@@ -1,7 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.API.Features.Items;
 
-namespace SuicidePro.Handlers.CustomEffect.Effect
+namespace SuicidePro.Handlers.CustomEffectHandlers.Effects
 {
     public class Explode : API.CustomEffect
     {

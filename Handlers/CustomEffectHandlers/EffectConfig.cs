@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel;
-using System.Linq;
 using SuicidePro.Configuration;
-using YamlDotNet.Serialization;
 
-namespace SuicidePro.Handlers.CustomEffect
+namespace SuicidePro.Handlers.CustomEffectHandlers
 {
     public class EffectConfig : Config.CustomHandlerCommandConfig
     {

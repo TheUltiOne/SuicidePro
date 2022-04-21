@@ -29,8 +29,7 @@ namespace SuicidePro.ContentGun
 
             var tempItems = ev.ItemsToDrop;
             foreach (Item item in ev.ItemsToDrop)
-                if (ContentGuns.Contains(item.Base))
-                    tempItems.Remove(item);
+                tempItems.Remove(item);
             ev.ItemsToDrop = tempItems;
         }
 

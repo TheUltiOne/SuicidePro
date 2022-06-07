@@ -55,7 +55,7 @@ namespace SuicidePro.ContentGun
                 cooldown.UsesLeft--;
 
                 var handler = new CustomReasonDamageHandler(Plugin.Instance.Config.ContentGunConfig.DeathCause, float.MaxValue);
-                Plugin.Instance.VelocityInfo.SetValue(handler, Plugin.Instance.Config.ContentGunConfig.Velocity.ToVector3(ev.Shooter.CameraTransform));
+                handler.StartVelocity = Plugin.Instance.Config.ContentGunConfig.Velocity.ToVector3(ev.Shooter.CameraTransform);
 
                 var ragdoll = new Exiled.API.Features.Ragdoll(new RagdollInfo(Server.Host.ReferenceHub, handler, Plugin.Instance.Config.ContentGunConfig.RagdollRoleType, ev.Shooter.Position, ev.Shooter.CameraTransform.rotation, Plugin.Instance.Config.ContentGunConfig.RagdollName, 1.0))
                     {

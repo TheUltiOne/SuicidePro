@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Exiled.API.Enums;
 using Exiled.API.Interfaces;
 using SuicidePro.API;
 using SuicidePro.Handlers.CustomEffectHandlers;
@@ -42,6 +43,13 @@ namespace SuicidePro.Configuration
 			new CustomHandlerCommandConfig {Name = "???", Description = "I don't even know what this will do.", Permission = "default", Response = "bruh", DamageHandler = new CustomDamageHandler {Reason = "???", Velocity = new Velocity(70, 70, 70)}}
 		};
 
+		[Description("The same as above, except it uses DamageTypes instead of custom messages.")]
+		public List<DamageHandlerCommandConfig> DamageTypeKillConfigs { get; set; } =
+			new List<DamageHandlerCommandConfig>
+			{
+				new DamageHandlerCommandConfig { Name = "disintegrate", Aliases = new[] {"railgun", "disruptor"}, Description = "Disintegrate yourself!", Permission = "default", Response = "Vanished", DamageType = DamageType.ParticleDisruptor }
+			};
+
 		[Description("Configuration for the Explode effect.")]
 		public Explode ExplodeEffect { get; set; } = new Explode
 		{
@@ -50,17 +58,6 @@ namespace SuicidePro.Configuration
 				Aliases = new[] {"boom"}, Name = "explode", Delay = 0.3f,
 				Description = "Explode! (Does not deal damage or break doors)", Response = "Boom!",
 				DamageHandler = new CustomDamageHandler {Reason = "Boom!", Velocity = new Velocity(2, 0, 0)}
-			}
-		};
-		
-		[Description("Configuration for the Disintegrate effect.")]
-		public Disintegrate DisintegrateEffect { get; set; } = new Disintegrate
-		{
-			Config = new EffectConfig
-			{
-				Aliases = new[] {"raygun"}, Name = "disintegrate",
-				Description = "Destroy your body!", Response = "Disintegrated",
-				IgnoreDamageHandlerConfigs = true
 			}
 		};
 
@@ -72,6 +69,9 @@ namespace SuicidePro.Configuration
 
 		[Description("Configuration for the Content Gun, summoned using .contentgun and requires cg.give permission")]
 		public ContentGunConfigClass ContentGunConfig { get; set; } = new ContentGunConfigClass();
+
+		/*[Description("!!!! ---- Experimental ---- !!!!\n# Configs below may cause bugs and such, please report them in GitHub issues or #plugin-bug-reports.\n# Enables .selectkill command, which allows you to have an effect upon your death.")]
+		public bool AllowSelectingDeathEffect { get; set; }*/
 
 		public class BaseCommandConfig
 		{
@@ -119,12 +119,24 @@ namespace SuicidePro.Configuration
 			/// </summary>
 			[Description("Number of seconds to wait before player's death is applied.")]
             public float Delay { get; set; }
+
+			[Description("Commands to run.\n# Accepted variables: %playerid%")]
+			public List<string> Commands { get; set; } = new List<string>();
+
+			[Description("These commands will be run before the delay is applied.")]
+			public List<string> PreDelayCommands { get; set; } = new List<string>();
 		}
 
 		public class CustomHandlerCommandConfig : BaseCommandConfig
 		{
 			[Description("A handler for mostly things after the death.")]
 			public CustomDamageHandler DamageHandler { get; set; } = new CustomDamageHandler();
+		}
+
+		public class DamageHandlerCommandConfig : BaseCommandConfig
+		{
+			[Description("Damage type used for the kill effect.")]
+			public DamageType DamageType { get; set; } = DamageType.Unknown;
 		}
 
 		public class CustomDamageHandler

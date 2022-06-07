@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CommandSystem;
@@ -52,7 +54,8 @@ namespace SuicidePro.Handlers
 			if (arg == null)
 				arg = "default";
 
-			Config.BaseCommandConfig config = Plugin.Instance.Config.KillConfigs.FirstOrDefault(x => x.Name == arg || x.Aliases.Contains(arg));
+			IEnumerable<Config.BaseCommandConfig> configs = Plugin.Instance.Config.KillConfigs.Concat((IEnumerable<Config.BaseCommandConfig>) Plugin.Instance.Config.DamageTypeKillConfigs);
+			Config.BaseCommandConfig config = configs.FirstOrDefault(x => x.Name == arg || x.Aliases.Contains(arg));
 			var customConfig = API.CustomEffect.Effects.FirstOrDefault(x => x.Config.Name == arg || x.Config.Aliases.Contains(arg));
 
 			if (config == null && customConfig == null)
@@ -84,11 +87,11 @@ namespace SuicidePro.Handlers
 
 			if (customConfig == null)
 			{
-				((Config.CustomHandlerCommandConfig) config).Run(player);
+				config.Run(player);
 			}
 			else
 			{
-				var ans = customConfig.Run(player);
+				var ans = customConfig.Run(player, arguments);
 				if (!ans && !Plugin.Instance.Config.AllowRunningDisabledForceRegistered)
 				{
 					response = "This effect is disabled.";

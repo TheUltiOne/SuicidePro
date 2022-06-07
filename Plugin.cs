@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Exiled.API.Features;
+using Exiled.Events.EventArgs;
+using Exiled.Loader;
+using MEC;
 using PlayerStatsSystem;
 using SuicidePro.ContentGun;
 using UnityEngine;
@@ -13,20 +18,29 @@ namespace SuicidePro
     {
         public override string Author { get; } = "TheUltiOne";
         public override string Name { get; } = "Suicide - Pro Edition";
-        public override Version Version { get; } = new Version(2, 1, 1);
-        public override Version RequiredExiledVersion { get; } = new Version(5, 1, 0);
+        public override Version Version { get; } = new Version(2, 2, 1);
+        public override Version RequiredExiledVersion { get; } = new Version(5, 2, 1);
 
+        public const string LiteDBAssemblyName = "LiteDB";
         public static Plugin Instance;
-        private static Handler _cgEventHandlers;
-        public FieldInfo VelocityInfo;
+        public List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
+        private Handler _cgEventHandlers;
 
         public override void OnEnabled()
         {
+            /*if (Config.AllowSelectingDeathEffect)
+            {
+                if (Loader.Dependencies.All(x => x.GetName().Name != LiteDBAssemblyName))
+                {
+                    throw new DllNotFoundException(
+                        "Could not find LiteDB dependency installed!\nTo prevent this error from occuring, please either install LiteDB from the GitHub release OR disable Selecting Kill Effect!");
+                }
+            }*/
+
             Instance = this;
             Config.ExplodeEffect.Register();
-            Config.DisintegrateEffect.Register();
 
-            VelocityInfo = typeof(CustomReasonDamageHandler).GetField("StartVelocity", BindingFlags.NonPublic | BindingFlags.Instance);
+            Server.RoundEnded += OnRoundEnded;
 
             if (Config.ContentGunConfig.Enabled)
             {
@@ -55,8 +69,16 @@ namespace SuicidePro
                 _cgEventHandlers = null;
             }
 
+            Server.RoundEnded -= OnRoundEnded;
+
             Instance = null;
             base.OnDisabled();
+        }
+
+        public void OnRoundEnded(RoundEndedEventArgs ev)
+        {
+            Timing.KillCoroutines(Coroutines.ToArray());
+            Coroutines.Clear();
         }
     }
 

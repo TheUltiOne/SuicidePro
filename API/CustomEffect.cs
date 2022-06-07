@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Features;
 using SuicidePro.API.Enums;
@@ -8,7 +9,7 @@ using YamlDotNet.Serialization;
 
 namespace SuicidePro.API
 {
-    public class CustomEffect
+    public abstract class CustomEffect
     {
         /// <summary>
         /// A <see cref="HashSet{T}"/> of all <see cref="CustomEffect"/>.
@@ -17,10 +18,10 @@ namespace SuicidePro.API
         public static readonly HashSet<CustomEffect> Effects = new HashSet<CustomEffect>();
 
         /// <summary>
-        /// The ID of the CustomEffect. This is absolutely required to override.
+        /// The ID of the CustomEffect.
         /// </summary>
         [YamlIgnore]
-        public virtual string Id { get; } = "default";
+        public abstract string Id { get; }
 
         /// <summary>
         /// A property used to see the <see cref="CustomEffect"/> config.
@@ -34,24 +35,22 @@ namespace SuicidePro.API
         /// The method that will be ran once this kill command is used.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> that ran the command.</param>
+        /// <param name="args">The arguments used when the Kill Command was used.</param>
         /// <remarks>The command by itself already handles checking if the command matches requirements set in config. You do not have to check for anything.</remarks>
-        public virtual void Use(Player player)
-        {
-        }
+        public abstract bool Use(Player player, ArraySegment<string> args);
 
         /// <summary>
         /// Runs this <see cref="CustomEffect"/> on a specific <see cref="Player"/> (<paramref name="player"/>).
         /// </summary>
         /// <param name="player">The <see cref="Player"/> that the this <see cref="CustomEffect"/> will be run on.</param>
         /// <returns>A <see cref="bool"/> that indicates whether this <see cref="CustomEffect"/> should be allowed to run.</returns>
-        public bool Run(Player player)
+        public bool Run(Player player, ArraySegment<string> args)
         {
             if (!Config.Enabled)
                 return false;
 
-            Use(player);
             Config.Run(player);
-            return true;
+            return Use(player, args);
         }
 
         /// <summary>
@@ -105,7 +104,7 @@ namespace SuicidePro.API
         public override string ToString()
             => $"{Config.Name} (ID {Id})";
 
-        // For config.
+        // For config to not throw an exception. (requires a default constructor with no parameters)
         public CustomEffect()
         {
         }

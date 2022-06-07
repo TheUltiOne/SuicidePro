@@ -28,15 +28,6 @@ namespace SuicidePro
 
         public override void OnEnabled()
         {
-            /*if (Config.AllowSelectingDeathEffect)
-            {
-                if (Loader.Dependencies.All(x => x.GetName().Name != LiteDBAssemblyName))
-                {
-                    throw new DllNotFoundException(
-                        "Could not find LiteDB dependency installed!\nTo prevent this error from occuring, please either install LiteDB from the GitHub release OR disable Selecting Kill Effect!");
-                }
-            }*/
-
             Instance = this;
             Config.ExplodeEffect.Register();
 

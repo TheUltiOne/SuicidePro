@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Exiled.API.Features;
-using Exiled.Events.EventArgs;
+using Exiled.Events.EventArgs.Server;
 using Exiled.Loader;
 using MEC;
-using PlayerStatsSystem;
 using SuicidePro.ContentGun;
 using UnityEngine;
 using Player = Exiled.Events.Handlers.Player;
@@ -16,10 +13,10 @@ namespace SuicidePro
 {
     public class Plugin : Plugin<Configuration.Config>
     {
-        public override string Author { get; } = "TheUltiOne";
+        public override string Author { get; } = "warden161";
         public override string Name { get; } = "Suicide - Pro Edition";
-        public override Version Version { get; } = new Version(2, 2, 1);
-        public override Version RequiredExiledVersion { get; } = new Version(5, 2, 1);
+        public override Version Version { get; } = new Version(2, 3, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
 
         public const string LiteDBAssemblyName = "LiteDB";
         public static Plugin Instance;

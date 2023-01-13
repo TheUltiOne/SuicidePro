@@ -4,6 +4,7 @@ using System.Linq;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs;
+using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items;
 using MEC;
 using PlayerStatsSystem;
@@ -46,35 +47,33 @@ namespace SuicidePro.ContentGun
         {
             try
             {
-                var item = ev.Shooter.CurrentItem;
+                var item = ev.Player.CurrentItem;
                 if (!ContentGuns.Contains(item.Base))
                     return;
-                
+
                 ev.IsAllowed = false;
-                var cooldown = Cooldowns.First(x => x.UserId == ev.Shooter.UserId);
+                var cooldown = Cooldowns.First(x => x.UserId == ev.Player.UserId);
                 cooldown.UsesLeft--;
 
                 var handler = new CustomReasonDamageHandler(Plugin.Instance.Config.ContentGunConfig.DeathCause, float.MaxValue);
-                handler.StartVelocity = Plugin.Instance.Config.ContentGunConfig.Velocity.ToVector3(ev.Shooter.CameraTransform);
+                handler.StartVelocity = Plugin.Instance.Config.ContentGunConfig.Velocity.ToVector3(ev.Player.CameraTransform);
 
-                var ragdoll = new Exiled.API.Features.Ragdoll(new RagdollInfo(Server.Host.ReferenceHub, handler, Plugin.Instance.Config.ContentGunConfig.RagdollRoleType, ev.Shooter.Position, ev.Shooter.CameraTransform.rotation, Plugin.Instance.Config.ContentGunConfig.RagdollName, 1.0))
-                    {
-                        Scale = Plugin.Instance.Config.ContentGunConfig.Scale
-                    };
-
+                var ragdoll = Ragdoll.Create(new RagdollData(Server.Host.ReferenceHub, handler, Plugin.Instance.Config.ContentGunConfig.RagdollRoleType, ev.Player.Position, ev.Player.CameraTransform.rotation, Plugin.Instance.Config.ContentGunConfig.RagdollName, 1.0));
+                ragdoll.Scale = Plugin.Instance.Config.ContentGunConfig.Scale;
                 ragdoll.Spawn();
+
                 Coroutines.Add(Timing.RunCoroutine(CleanupRagdoll(ragdoll)));
                 if (cooldown.UsesLeft <= 0)
                 {
-                    ev.Shooter.ShowHint("Your <b>Content Gun</b> has <b><color=red>no more uses</color></b>.\nPlease wait <b>3m45s</b> before using <b><color=red>the command again</color></b>.");
+                    ev.Player.ShowHint("Your <b>Content Gun</b> has <b><color=red>no more uses</color></b>.\nPlease wait <b>3m45s</b> before using <b><color=red>the command again</color></b>.");
                     cooldown.DeletedAt = DateTime.Now;
                     cooldown.UsesLeft = Plugin.Instance.Config.ContentGunConfig.Uses;
                     ContentGuns.Remove(item.Base);
-                    ev.Shooter.RemoveHeldItem();
+                    ev.Player.RemoveHeldItem();
                 }
                 else
                 {
-                    ev.Shooter.ShowHint($"You have <b><color=red>{cooldown.UsesLeft}</color> uses remaining</b> on your <b><color=red>Content Gun</color></b>");
+                    ev.Player.ShowHint($"You have <b><color=red>{cooldown.UsesLeft}</color> uses remaining</b> on your <b><color=red>Content Gun</color></b>");
                 }
             }
             catch (Exception e)

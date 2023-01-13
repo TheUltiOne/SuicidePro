@@ -48,7 +48,7 @@ namespace SuicidePro.Handlers
                 case Config.CustomHandlerCommandConfig cCfg:
                     var handler = new CustomReasonDamageHandler(cCfg.DamageHandler.Reason, float.MaxValue, cCfg.DamageHandler.CassieIfScp);
                     player.Hurt(handler);
-                    handler.StartVelocity = player.ReferenceHub.playerMovementSync.PlayerVelocity + cCfg.DamageHandler.Velocity.ToVector3(player.CameraTransform);
+                    handler.StartVelocity = player.Velocity + cCfg.DamageHandler.Velocity.ToVector3(player.CameraTransform);
                     break;
             }
 

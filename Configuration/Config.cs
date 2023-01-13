@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Exiled.API.Enums;
 using Exiled.API.Interfaces;
-using SuicidePro.API;
+using PlayerRoles;
 using SuicidePro.Handlers.CustomEffectHandlers;
 using SuicidePro.Handlers.CustomEffectHandlers.Effects;
 using UnityEngine;
@@ -109,10 +109,10 @@ namespace SuicidePro.Configuration
             public string[] Aliases { get; set; } = Array.Empty<string>();
 
 			/// <summary>
-			/// A <see cref="List{T}"/> of <see cref="RoleType"/>, that when the player is a role that is contained within the list, prevents execution of the command.
+			/// A <see cref="List{T}"/> of <see cref="RoleTypeId"/>, that when the player is a role that is contained within the list, prevents execution of the command.
 			/// </summary>
 			[Description("RoleTypes that are not allowed to use this command.")]
-            public List<RoleType> BannedRoles { get; set; } = new List<RoleType>();
+            public List<RoleTypeId> BannedRoles { get; set; } = new List<RoleTypeId>();
 
 			/// <summary>
 			/// <see cref="float"/> in seconds to wait before the <see cref="Exiled.API.Features.Player"/>'s death is applied.
@@ -167,8 +167,8 @@ namespace SuicidePro.Configuration
 			public string RagdollName { get; set; } = "Nerd";
 			[Description("Death reason in ragdoll info.")]
 			public string DeathCause { get; set; } = "Spawned using the Content Gun!";
-			[Description("The RoleType of the created ragdoll.")]
-			public RoleType RagdollRoleType { get; set; } = RoleType.Scientist;
+			[Description("The RoleTypeId of the created ragdoll.")]
+			public RoleTypeId RagdollRoleType { get; set; } = RoleTypeId.Scientist;
 			[Description("The size of the created ragdoll.")]
 			public Vector3 Scale { get; set; } = Vector3.one;
 			[Description("Cooldown before being able to use .contentgun again.")]

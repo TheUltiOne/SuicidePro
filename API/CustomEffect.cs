@@ -78,7 +78,7 @@ namespace SuicidePro.API
             }
 
             Effects.Add(this);
-            Log.Debug($"{this} registered successfully!", Plugin.Instance.Config.Debug);
+            Log.Debug($"{this} registered successfully!");
         }
 
         /// <summary>

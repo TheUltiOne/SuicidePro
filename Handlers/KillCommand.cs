@@ -107,10 +107,10 @@ namespace SuicidePro.Handlers
 		{
 			if (config.Permission == "default")
 			{
-				Log.Debug("Permission name is 'default', returning kl." + config.Name, Plugin.Instance.Config.Debug);
+				Log.Debug("Permission name is 'default', returning kl." + config.Name);
 				return $"kl.{config.Name}";
 			}
-			Log.Debug("Permission name is not 'default', returning " + config.Permission, Plugin.Instance.Config.Debug);
+			Log.Debug("Permission name is not 'default', returning " + config.Permission);
 			return config.Permission;
 		}
 	}

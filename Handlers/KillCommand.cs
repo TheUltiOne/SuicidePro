@@ -7,8 +7,10 @@ using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using RemoteAdmin;
-using SuicidePro.Configuration;
 using Log = Exiled.API.Features.Log;
+using SuicidePro;
+using SuicidePro.API;
+using SuicidePro.API.Features;
 
 namespace SuicidePro.Handlers
 {
@@ -32,42 +34,32 @@ namespace SuicidePro.Handlers
 			string arg = arguments.FirstOrDefault();
 			Player player = Player.Get(playerCommandSender);
 
-			if (Plugin.Instance.Config.HelpCommandAliases.Contains(arg))
+
+			IEnumerable<BaseEffect> effects = Plugin.Instance.Config.KillConfigs.Cast<BaseEffect>().Concat(CustomEffect.Effects.Cast<BaseEffect>());
+            if (Plugin.Instance.Config.HelpCommandAliases.Contains(arg))
 			{
 				var build = new StringBuilder("Here are all the kill commands you can use:\n\n");
-				foreach (var commandConfig in Plugin.Instance.Config.KillConfigs)
+				foreach (var commandConfig in effects)
 				{
 					if (commandConfig.Permission == "none" || player.CheckPermission(FormatPermission(commandConfig)))
 						build.Append($"<b><color=white>.{Plugin.Instance.Config.CommandPrefix}</color> <color=yellow>{commandConfig.Name}</color></b> {(commandConfig.Aliases.Any() ? $"<color=#3C3C3C>({String.Join(", ", commandConfig.Aliases)})</color>" : String.Empty)}\n<color=white>{commandConfig.Description}</color>\n\n");
-				}
-
-				foreach (var effect in API.CustomEffect.Effects)
-				{
-					if (effect.Config.Enabled && (effect.Config.Permission == "none" || player.CheckPermission(FormatPermission(effect.Config))))
-						build.Append($"<b><color=white>.{Plugin.Instance.Config.CommandPrefix}</color> <color=yellow>{effect.Config.Name}</color></b> {(effect.Config.Aliases.Any() ? $"<color=#3C3C3C>({String.Join(", ", effect.Config.Aliases)})</color>" : String.Empty)}\n<color=white>{effect.Config.Description}</color>\n\n");
 				}
 
 				response = build.ToString();
 				return true;
 			}
 
-			if (arg == null)
-				arg = "default";
+			arg ??= "default";
 
-			IEnumerable<Config.BaseCommandConfig> configs = Plugin.Instance.Config.KillConfigs.Concat((IEnumerable<Config.BaseCommandConfig>) Plugin.Instance.Config.DamageTypeKillConfigs);
-			Config.BaseCommandConfig config = configs.FirstOrDefault(x => x.Name == arg || x.Aliases.Contains(arg));
-			var customConfig = API.CustomEffect.Effects.FirstOrDefault(x => x.Config.Name == arg || x.Config.Aliases.Contains(arg));
+			var effect = effects.FirstOrDefault(x => x.Name == arg || x.Aliases.Contains(arg));
 
-			if (config == null && customConfig == null)
+			if (effect == null)
 			{
 				response = $"Could not find any kill command with the name or alias {arg}.";
 				return false;
 			}
 
-			if (customConfig != null)
-				config = customConfig.Config;
-
-			if (config.Permission != "none" && !player.CheckPermission(FormatPermission(config)))
+			if (effect.Permission != "none" && !player.CheckPermission(FormatPermission(effect)))
 			{
 				response = "You do not have the required permissions for this command.";
 				return false;
@@ -79,39 +71,42 @@ namespace SuicidePro.Handlers
 				return false;
 			}
 
-			if (config.BannedRoles.Contains(player.Role) || player.IsDead)
+			if (effect.BannedRoles.Contains(player.Role) || player.IsDead)
 			{
 				response = "You cannot run this kill variation as your role.";
 				return false;
 			}
 
-			if (customConfig == null)
+			var ans = effect.Run(player, GetArgs(arguments));
+			if (!ans && !Plugin.Instance.Config.AllowRunningDisabled)
 			{
-				config.Run(player);
-			}
-			else
-			{
-				var ans = customConfig.Run(player, arguments);
-				if (!ans && !Plugin.Instance.Config.AllowRunningDisabledForceRegistered)
-				{
-					response = "This effect is disabled.";
-					return false;
-				}
+				response = "This effect is disabled.";
+				return false;
 			}
 
-			response = config.Response;
+			response = effect.Response;
 			return true;
 		}
 
-		public string FormatPermission(Config.BaseCommandConfig config)
+		// So much linq
+		// Todo: optimize heavily
+		public string[] GetArgs(ArraySegment<string> args)
 		{
-			if (config.Permission == "default")
+			if (args.IsEmpty())
+				return args.ToArray();
+
+			return args.ToList().GetRange(1, args.Count).ToArray();
+		}
+
+		public string FormatPermission(BaseEffect effect)
+		{
+			if (effect.Permission == "default")
 			{
-				Log.Debug("Permission name is 'default', returning kl." + config.Name);
-				return $"kl.{config.Name}";
+				Log.Debug("Permission name is 'default', returning kl." + effect.Name);
+				return $"kl.{effect.Name}";
 			}
-			Log.Debug("Permission name is not 'default', returning " + config.Permission);
-			return config.Permission;
+			Log.Debug("Permission name is not 'default', returning " + effect.Permission);
+			return effect.Permission;
 		}
 	}
 }

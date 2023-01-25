@@ -5,7 +5,7 @@ using Exiled.API.Features.Items;
 
 namespace SuicidePro.Handlers.CustomEffectHandlers.Effects
 {
-    public class Explode : API.CustomEffect
+    public class Explode : SuicidePro.API.Features.CustomEffect
     {
         public override string Id { get; } = "explode";
 
@@ -17,14 +17,16 @@ namespace SuicidePro.Handlers.CustomEffectHandlers.Effects
             "Fuse time of the grenade. I don't know what the minimum is before the grenade acts all wacky, but 0.3 is a safe value.")]
         public float Fuse { get; set; } = 0.3f;
 
-        public override bool Use(Player player, ArraySegment<string> args)
+        /// <inheritdoc/>
+        public override void Use(Player player, string[] args)
         {
             var grenade = Item.Create(ItemType.GrenadeHE) as ExplosiveGrenade;
             grenade.FuseTime = Fuse;
-            grenade.MaxRadius = Radius;
+
+            if (Radius != -1)
+                grenade.MaxRadius = Radius;
 
             grenade.SpawnActive(player.Position, player);
-            return true;
         }
     }
 }

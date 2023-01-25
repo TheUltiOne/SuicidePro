@@ -9,6 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SuicidePro</RootNamespace>
     <AssemblyName>SuicidePro</AssemblyName>
+    <LangVersion>latest</LangVersion>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -37,29 +38,28 @@
     <Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="false" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
     <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" Private="false" />
-	  <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
-	<Reference Include="System" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
+    <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\CustomEffect.cs" />
+    <Compile Include="API\BaseEffect.cs" />
+    <Compile Include="API\Features\CustomEffect.cs" />
     <Compile Include="API\Enums\IgnoreRequirementType.cs" />
-    <Compile Include="Configuration\Config.cs" />
-    <Compile Include="ContentGun\ContentGunCommand.cs" />
-    <Compile Include="ContentGun\Handler.cs" />
-    <Compile Include="Handlers\CustomEffectHandlers\EffectConfig.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Handlers\ContentGun\ContentGunCommand.cs" />
+    <Compile Include="Handlers\ContentGun\Handler.cs" />
     <Compile Include="Handlers\CustomEffectHandlers\Effects\Explode.cs" />
+    <Compile Include="Handlers\Effects\DamageHandlerEffect.cs" />
     <Compile Include="Handlers\KillCommand.cs" />
-    <Compile Include="Handlers\Methods.cs" />
+    <Compile Include="Methods.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handlers\Database\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <PackageReference Include="EXILED">
       <Version>6.0.0-beta.20</Version>

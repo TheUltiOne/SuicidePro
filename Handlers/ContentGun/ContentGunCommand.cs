@@ -5,8 +5,9 @@ using CommandSystem;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Permissions.Extensions;
+using SuicidePro.Handlers.ContentGun;
 
-namespace SuicidePro.ContentGun
+namespace SuicidePro.Handlers.ContentGun
 {
     [CommandHandler(typeof(ClientCommandHandler))]
     public class ContentGunCommand : ICommand

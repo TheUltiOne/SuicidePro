@@ -8,8 +8,9 @@ using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items;
 using MEC;
 using PlayerStatsSystem;
+using SuicidePro.Handlers.ContentGun;
 
-namespace SuicidePro.ContentGun
+namespace SuicidePro.Handlers.ContentGun
 {
     public class Handler
     {

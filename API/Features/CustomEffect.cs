@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Features;
 using SuicidePro.API.Enums;
-using SuicidePro.Handlers;
-using SuicidePro.Handlers.CustomEffectHandlers;
 using YamlDotNet.Serialization;
+using SuicidePro.Handlers;
+using SuicidePro.API.Features;
 
-namespace SuicidePro.API
+namespace SuicidePro.API.Features
 {
-    public abstract class CustomEffect
+    public abstract class CustomEffect : BaseEffect
     {
         /// <summary>
         /// A <see cref="HashSet{T}"/> of all <see cref="CustomEffect"/>.
@@ -24,34 +23,16 @@ namespace SuicidePro.API
         public abstract string Id { get; }
 
         /// <summary>
-        /// A property used to see the <see cref="CustomEffect"/> config.
-        /// </summary>
-        /// <remarks>This will not be automatically added to any config file.
-        /// To add it to a config, just create an instance inside of your config and use the <see cref="Register"/> method in your <see cref="Plugin{TConfig}.OnEnabled"/>.
-        /// </remarks>
-        public EffectConfig Config { get; set; } = new EffectConfig();
-
-        /// <summary>
         /// The method that will be ran once this kill command is used.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> that ran the command.</param>
         /// <param name="args">The arguments used when the Kill Command was used.</param>
         /// <remarks>The command by itself already handles checking if the command matches requirements set in config. You do not have to check for anything.</remarks>
-        public abstract bool Use(Player player, ArraySegment<string> args);
+        public abstract void Use(Player player, string[] args);
 
-        /// <summary>
-        /// Runs this <see cref="CustomEffect"/> on a specific <see cref="Player"/> (<paramref name="player"/>).
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> that the this <see cref="CustomEffect"/> will be run on.</param>
-        /// <returns>A <see cref="bool"/> that indicates whether this <see cref="CustomEffect"/> should be allowed to run.</returns>
-        public bool Run(Player player, ArraySegment<string> args)
-        {
-            if (!Config.Enabled)
-                return false;
-
-            Config.Run(player);
-            return Use(player, args);
-        }
+        /// <inheritdoc/>
+        public override void Execute(Player player, string[] args)
+            => Use(player, args);
 
         /// <summary>
         /// A method used to properly add a <see cref="CustomEffect"/> with checks for it to be usable with with the kill command.
@@ -71,7 +52,7 @@ namespace SuicidePro.API
                 return;
             }
 
-            if (!Config.Enabled && !force.HasFlag(IgnoreRequirementType.Enabled))
+            if (!Enabled && !force.HasFlag(IgnoreRequirementType.Enabled))
             {
                 Log.Warn($"{this} attempted to register but failed: already registered.");
                 return;
@@ -101,8 +82,9 @@ namespace SuicidePro.API
             return effect != null;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
-            => $"{Config.Name} (ID {Id})";
+            => $"{Name} (ID {Id})";
 
         // For config to not throw an exception. (requires a default constructor with no parameters)
         public CustomEffect()

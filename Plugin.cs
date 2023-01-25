@@ -2,23 +2,21 @@
 using System.Collections.Generic;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Server;
-using Exiled.Loader;
 using MEC;
-using SuicidePro.ContentGun;
 using UnityEngine;
 using Player = Exiled.Events.Handlers.Player;
 using Server = Exiled.Events.Handlers.Server;
+using SuicidePro.Handlers.ContentGun;
 
 namespace SuicidePro
 {
-    public class Plugin : Plugin<Configuration.Config>
+    public class Plugin : Plugin<Config>
     {
         public override string Author { get; } = "warden161";
         public override string Name { get; } = "Suicide - Pro Edition";
-        public override Version Version { get; } = new Version(2, 3, 0);
+        public override Version Version { get; } = new Version(3, 0, 0);
         public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
 
-        public const string LiteDBAssemblyName = "LiteDB";
         public static Plugin Instance;
         public List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
         private Handler _cgEventHandlers;

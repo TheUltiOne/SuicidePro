@@ -57,9 +57,10 @@
     <Compile Include="Handlers\KillCommand.cs" />
     <Compile Include="Methods.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">
       <Version>6.0.0-beta.20</Version>

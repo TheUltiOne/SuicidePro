@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using SuicidePro.API.Enums;
+using System.Collections.Generic;
+using System.Linq;
 using YamlDotNet.Serialization;
-using SuicidePro.Handlers;
-using SuicidePro.API.Features;
 
 namespace SuicidePro.API.Features
 {
@@ -14,7 +12,7 @@ namespace SuicidePro.API.Features
         /// A <see cref="HashSet{T}"/> of all <see cref="CustomEffect"/>.
         /// </summary>
         /// <remarks>This does not exactly contain all <see cref="CustomEffect"/>. It will only do so if developers who add their <see cref="CustomEffect"/> use <see cref="Register"/> on their effect.</remarks>
-        public static readonly HashSet<CustomEffect> Effects = new HashSet<CustomEffect>();
+        public static readonly HashSet<CustomEffect> Effects = new();
 
         /// <summary>
         /// The ID of the CustomEffect.

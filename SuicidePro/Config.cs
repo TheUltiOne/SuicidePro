@@ -3,7 +3,6 @@ using System.ComponentModel;
 using Exiled.API.Enums;
 using Exiled.API.Interfaces;
 using PlayerRoles;
-using SuicidePro.Handlers.CustomEffectHandlers.Effects;
 using UnityEngine;
 using SuicidePro.Handlers.Effects;
 using PlayerStatsSystem;

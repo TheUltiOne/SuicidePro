@@ -1,6 +1,5 @@
 ﻿using Exiled.API.Interfaces;
 using SuicidePro.Addons.Effects;
-using SuicidePro.Handlers.CustomEffectHandlers.Effects;
 using System.ComponentModel;
 
 namespace SuicidePro.Addons
@@ -30,7 +29,6 @@ namespace SuicidePro.Addons
             Description = "Disintegrate yourself.",
             Response = "death"
         };
-
 
         public GunSuicideEffect GunSuicideEffect { get; set; } = new()
         {

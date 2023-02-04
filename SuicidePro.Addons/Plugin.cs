@@ -25,10 +25,5 @@ namespace SuicidePro.Addons
 
             base.OnEnabled();
         }
-
-        public override void OnDisabled()
-        {
-            base.OnDisabled();
-        }
     }
 }

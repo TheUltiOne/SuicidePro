@@ -24,8 +24,6 @@ namespace SuicidePro
         public override void OnEnabled()
         {
             Instance = this;
-            Config.ExplodeEffect.Register();
-            Config.DisintegrateEffect.Register();
 
             Server.RoundEnded += OnRoundEnded;
 

@@ -1,12 +1,10 @@
-﻿using System;
-using System.ComponentModel;
-using Exiled.API.Features;
-using Exiled.API.Features.Items;
+﻿using Exiled.API.Features;
+using SuicidePro.API.Features;
 using PlayerStatsSystem;
 
 namespace SuicidePro.Addons.Effects
 {
-    public class Disintegrate : API.Features.CustomEffect
+    public class Disintegrate : CustomEffect
     {
         public override string Id { get; } = "disintegrate";
 

@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using Exiled.API.Features;
 using MEC;
-using PlayerStatsSystem;
-using SuicidePro.Handlers.CustomEffectHandlers;
-using SuicidePro;
 using SuicidePro.API;
 
 namespace SuicidePro

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using SuicidePro.API.Features;
 using System.ComponentModel;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 
 namespace SuicidePro.Addons.Effects
 {
-    public class Explode : SuicidePro.API.Features.CustomEffect
+    public class Explode : CustomEffect
     {
         public override string Id { get; } = "explode";
 

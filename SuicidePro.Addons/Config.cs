@@ -12,5 +12,7 @@ namespace SuicidePro.Addons
         {
             new() { Scripts = new() {"DemoScript"} }
         };*/
+
+        public GunSuicideEffect GunSuicideEffect { get; set; } = new();
     }
 }

@@ -21,6 +21,8 @@ namespace SuicidePro.Addons
             Instance = this;
             Events = new EventHandlers();
 
+            Config.GunSuicideEffect.Register();
+
             base.OnEnabled();
         }
 

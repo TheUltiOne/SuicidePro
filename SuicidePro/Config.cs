@@ -6,6 +6,7 @@ using PlayerRoles;
 using SuicidePro.Handlers.CustomEffectHandlers.Effects;
 using UnityEngine;
 using SuicidePro.Handlers.Effects;
+using PlayerStatsSystem;
 
 namespace SuicidePro
 {
@@ -40,7 +41,6 @@ namespace SuicidePro
 			new() {Name = "flip", Description = "Do a flip!", Response = "Epic tricks",Reason = "Did a flip", Velocity = new Velocity(1f, 5, 0)},
 			new() {Name = "backflip", Description = "Do a backflip!", Response = "Epic back tricks", Reason = "Did a backflip", Velocity = new Velocity(-1f, 5, 0)},
 			new() {Name = "???", Description = "I don't even know what this will do.", Response = "bruh", Reason = "???", Velocity = new Velocity(70, 70, 70)},
-			new() {Name = "disintegrate", Description = "Disintegrate yourself.", Response = "death", DamageType = DamageType.ParticleDisruptor},
 		};
 
 		[Description("Configuration for the builtin Explode effect.")]
@@ -50,7 +50,15 @@ namespace SuicidePro
 			Description = "Explode! (Does not deal damage or break doors)", Response = "Boom!",
 		};
 
-		[Description("Enables debug messages in the console.")]
+        [Description("Configuration for the builtin Disintegrate effect.")]
+        public Disintegrate DisintegrateEffect { get; set; } = new Disintegrate
+        {
+            Name = "disintegrate",
+			Description = "Disintegrate yourself.",
+			Response = "death"
+        };
+
+        [Description("Enables debug messages in the console.")]
 		public bool Debug { get; set; }
 
 		[Description("Whether you will still be able to run disabled effects that are force registered by its developer.")]

@@ -23,7 +23,6 @@ namespace SuicidePro.Handlers
 
 		public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
 		{
-			
 			PlayerCommandSender playerCommandSender = sender as PlayerCommandSender;
 			if (playerCommandSender == null)
 			{
@@ -34,9 +33,14 @@ namespace SuicidePro.Handlers
 			string arg = arguments.FirstOrDefault();
 			Player player = Player.Get(playerCommandSender);
 
+			List<BaseEffect> effects = new();
+			foreach (var defaultEffect in Plugin.Instance.Config.KillConfigs)
+				effects.Add(defaultEffect);
 
-			IEnumerable<BaseEffect> effects = Plugin.Instance.Config.KillConfigs.Cast<BaseEffect>().Concat(CustomEffect.Effects.Cast<BaseEffect>());
-            if (Plugin.Instance.Config.HelpCommandAliases.Contains(arg))
+			foreach (var customEffect in CustomEffect.Effects)
+				effects.Add(customEffect);
+
+            if (arg != null && Plugin.Instance.Config.HelpCommandAliases.Contains(arg))
 			{
 				var build = new StringBuilder("Here are all the kill commands you can use:\n\n");
 				foreach (var commandConfig in effects)
@@ -92,10 +96,10 @@ namespace SuicidePro.Handlers
 		// Todo: optimize heavily
 		public string[] GetArgs(ArraySegment<string> args)
 		{
-			if (args.IsEmpty())
-				return args.ToArray();
+			if (args.Count < 2)
+				return Array.Empty<string>();
 
-			return args.ToList().GetRange(1, args.Count).ToArray();
+			return args.Skip(1).ToArray();
 		}
 
 		public string FormatPermission(BaseEffect effect)

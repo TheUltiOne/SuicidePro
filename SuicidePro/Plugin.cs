@@ -25,6 +25,7 @@ namespace SuicidePro
         {
             Instance = this;
             Config.ExplodeEffect.Register();
+            Config.DisintegrateEffect.Register();
 
             Server.RoundEnded += OnRoundEnded;
 

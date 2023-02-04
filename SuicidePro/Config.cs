@@ -43,21 +43,6 @@ namespace SuicidePro
 			new() {Name = "???", Description = "I don't even know what this will do.", Response = "bruh", Reason = "???", Velocity = new Velocity(70, 70, 70)},
 		};
 
-		[Description("Configuration for the builtin Explode effect.")]
-		public Explode ExplodeEffect { get; set; } = new Explode
-		{
-			Aliases = new[] {"boom"}, Name = "explode",
-			Description = "Explode! (Does not deal damage or break doors)", Response = "Boom!",
-		};
-
-        [Description("Configuration for the builtin Disintegrate effect.")]
-        public Disintegrate DisintegrateEffect { get; set; } = new Disintegrate
-        {
-            Name = "disintegrate",
-			Description = "Disintegrate yourself.",
-			Response = "death"
-        };
-
         [Description("Enables debug messages in the console.")]
 		public bool Debug { get; set; }
 

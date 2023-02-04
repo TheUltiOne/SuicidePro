@@ -18,21 +18,26 @@ namespace SuicidePro.Addons.Effects
         [Description("What should be the gun's item type?")]
         public ItemType GunItemType { get; set; } = ItemType.GunCOM18;
         public string DeathReason { get; set; } = "Suicided (in a really cool manner)";
-        public Vector3 PositionOffset { get; set; } = new(0, 2, 0);
+        public float VerticalOffset { get; set; } = 1;
+        public float ForwardOffset { get; set; } = 1;
+        public float TimeBeforeDeath { get; set; } = 3;
 
         /// <inheritdoc/>
         public override void Use(Player player, string[] args)
         {
             player.EnableEffect<Ensnared>();
             var pickup = Pickup.Create(GunItemType);
-            var pos = (player.Transform.forward * 2f) + PositionOffset + player.Position;
-            Quaternion rot = Quaternion.Euler(player.Transform.rotation * player.Transform.forward + new Vector3(0, -2, 0));
 
-            pickup.Position = pos;
-            pickup.Rotation = rot;
-            Timing.CallDelayed(3, () => {
+            pickup.IsLocked = true;
+            pickup.Position = player.Position + (player.Transform.forward * ForwardOffset) + Vector3.up * VerticalOffset;
+            pickup.Rotation = Quaternion.Euler(-player.Transform.rotation.eulerAngles);
+            pickup.GameObject.GetComponent<Rigidbody>().isKinematic = true;
+            pickup.Spawn();
+
+            Timing.CallDelayed(TimeBeforeDeath, () => {
                 PlayGunSound(player);
                 player.Kill(DeathReason);
+                pickup.UnSpawn();
             });
         }
 

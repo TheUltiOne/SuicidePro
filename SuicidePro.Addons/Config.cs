@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Interfaces;
 using SuicidePro.Addons.Effects;
-using System.Collections.Generic;
+using SuicidePro.Handlers.CustomEffectHandlers.Effects;
+using System.ComponentModel;
 
 namespace SuicidePro.Addons
 {
@@ -13,6 +14,29 @@ namespace SuicidePro.Addons
             new() { Scripts = new() {"DemoScript"} }
         };*/
 
-        public GunSuicideEffect GunSuicideEffect { get; set; } = new();
+        [Description("Configuration for the builtin Explode effect.")]
+        public Explode ExplodeEffect { get; set; } = new Explode
+        {
+            Aliases = new[] { "boom" },
+            Name = "explode",
+            Description = "Explode! (Does not deal damage or break doors)",
+            Response = "Boom!",
+        };
+
+        [Description("Configuration for the builtin Disintegrate effect.")]
+        public Disintegrate DisintegrateEffect { get; set; } = new Disintegrate
+        {
+            Name = "disintegrate",
+            Description = "Disintegrate yourself.",
+            Response = "death"
+        };
+
+
+        public GunSuicideEffect GunSuicideEffect { get; set; } = new()
+        {
+            Name = "gun",
+            Description = "Kills you with a little gun animation",
+            Response = "Getready",
+        };
     }
 }

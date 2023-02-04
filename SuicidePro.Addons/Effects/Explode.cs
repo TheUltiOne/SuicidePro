@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 
-namespace SuicidePro.Handlers.CustomEffectHandlers.Effects
+namespace SuicidePro.Addons.Effects
 {
     public class Explode : SuicidePro.API.Features.CustomEffect
     {

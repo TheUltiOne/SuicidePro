@@ -52,8 +52,6 @@
     <Compile Include="Config.cs" />
     <Compile Include="Handlers\ContentGun\ContentGunCommand.cs" />
     <Compile Include="Handlers\ContentGun\Handler.cs" />
-    <Compile Include="Handlers\CustomEffectHandlers\Effects\Disintegrate.cs" />
-    <Compile Include="Handlers\CustomEffectHandlers\Effects\Explode.cs" />
     <Compile Include="Handlers\Effects\DamageHandlerEffect.cs" />
     <Compile Include="Handlers\KillCommand.cs" />
     <Compile Include="Methods.cs" />

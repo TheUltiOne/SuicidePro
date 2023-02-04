@@ -11,7 +11,6 @@ namespace SuicidePro.Addons
         public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
 
         public static Plugin Instance { get; private set; }
-        internal EventHandlers Events { get; set; }
 
         public override void OnEnabled()
         {
@@ -19,18 +18,16 @@ namespace SuicidePro.Addons
                 script.Register(IgnoreRequirementType.IdDuplicates | IgnoreRequirementType.Duplicates);
             */
             Instance = this;
-            Events = new EventHandlers();
 
             Config.GunSuicideEffect.Register();
+            Config.ExplodeEffect.Register();
+            Config.DisintegrateEffect.Register();
 
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
-            Events.Dispose();
-            Events = null;
-
             base.OnDisabled();
         }
     }

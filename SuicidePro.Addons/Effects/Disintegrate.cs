@@ -4,7 +4,7 @@ using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using PlayerStatsSystem;
 
-namespace SuicidePro.Handlers.CustomEffectHandlers.Effects
+namespace SuicidePro.Addons.Effects
 {
     public class Disintegrate : API.Features.CustomEffect
     {
